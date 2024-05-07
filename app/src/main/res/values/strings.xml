@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Iplan Gestión SL</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="correo">Correo</string>
+    <string name="password">Contraseña</string>
+    <string name="login">Iniciar sesión</string>
+    <string name="reset_password">Reestablecer contraseña</string>
+    <string name="logo">Logo</string>
+    <string name="employees">Employees</string>
+</resources>
