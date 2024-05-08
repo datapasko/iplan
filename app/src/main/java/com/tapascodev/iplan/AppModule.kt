@@ -3,6 +3,7 @@ package com.tapascodev.iplan
 import android.content.Context
 import com.tapascodev.iplan.auth.data.AuthApi
 import com.tapascodev.iplan.auth.data.AuthInterceptor
+import com.tapascodev.iplan.home.data.UserApi
 import com.tapascodev.iplan.network.data.RemoteDataSource
 import dagger.Module
 import dagger.Provides
@@ -24,5 +25,14 @@ object AppModule {
         @ApplicationContext context: Context
     ): AuthApi {
         return remoteDataSource.buildApi(AuthApi::class.java, context)
+    }
+
+    @Singleton
+    @Provides
+    fun provideUserApi(
+        remoteDataSource: RemoteDataSource,
+        @ApplicationContext context: Context
+    ): UserApi {
+        return remoteDataSource.buildApi(UserApi::class.java, context)
     }
 }

@@ -18,8 +18,10 @@ import com.tapascodev.iplan.auth.domain.AuthRepository
 import com.tapascodev.iplan.auth.domain.LoginResponseModel
 import com.tapascodev.iplan.base.ui.BaseFragment
 import com.tapascodev.iplan.base.ui.handleApiError
+import com.tapascodev.iplan.base.ui.startNewActivity
 import com.tapascodev.iplan.base.ui.visible
 import com.tapascodev.iplan.databinding.FragmentLoginBinding
+import com.tapascodev.iplan.home.ui.HomeActivity
 import com.tapascodev.iplan.network.data.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -36,18 +38,25 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
         initUI()
 
         viewModel.loginResponse.observe(viewLifecycleOwner, Observer {
-            binding.pbLogin.visible(it is Resource.Loading)
             when (it) {
-                is Resource.Success -> saveToken(it.value)
-                is Resource.Failure -> handleApiError(it) { login() }
-                else -> {}
+                is Resource.Success -> {
+                    saveToken(it.value)
+                    //binding.pbLogin.visible(false)
+                }
+                is Resource.Failure -> {
+                    handleApiError(it) { login() }
+                    //binding.pbLogin.visible(false)
+                }
+                is Resource.Loading -> binding.pbLogin.visible(true)
             }
         })
     }
 
     private fun saveToken(responseModel: LoginResponseModel) {
-        Log.d("barcelona", responseModel.toString())
-
+        lifecycleScope.launch {
+            viewModel.saveAccessToken(responseModel.token)
+            requireActivity().startNewActivity(HomeActivity::class.java)
+        }
     }
 
     private fun initUI() {

@@ -9,6 +9,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.tapascodev.iplan.auth.ui.LoginFragment
 import com.tapascodev.iplan.home.ui.HomeActivity
 import com.tapascodev.iplan.network.data.Resource
+import kotlinx.coroutines.launch
 
 fun <A : Activity> Activity.startNewActivity(activity: Class<A>) {
     Intent(this, activity).also {
@@ -49,12 +50,18 @@ fun Fragment.handleApiError(
             if (this is LoginFragment) {
                 requireView().snackbar("You've entered incorrect email or password")
             } else {
-                //logout()
+                logout()
             }
         }
         else -> {
             val error = failure.errorBody?.string().toString()
             requireView().snackbar(error)
         }
+    }
+}
+
+fun Fragment.logout() = lifecycleScope.launch {
+    if (activity is HomeActivity) {
+        (activity as HomeActivity).performLogout()
     }
 }
