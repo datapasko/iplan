@@ -52,6 +52,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
         })
     }
 
+    //intent.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
+
     private fun saveToken(responseModel: LoginResponseModel) {
         lifecycleScope.launch {
             viewModel.saveAccessToken(responseModel.token)
